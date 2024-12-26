@@ -1,0 +1,102 @@
+A Program to show how to work with findBy methods:
+Programs:
+* SpringBootDataJPAApplication1Application.java
+* Employee.java
+* EmployeeRepository.java
+* TestRunner.java
+Notes:
+* The findBy method are abstract methods, which will generate select query at runtime.
+* This are methods are always start with findBy only.
+* If method required to arguments but it created with one argument then it will throw 'java.lang.IllegalStateException' exception.
+* If the property is not matching with in the entity then it will throw 'org.springframework.data.mapping.PropertyReferenceException' exception.
+
+Keyword				Sample														JPQL snippet
+Distinct			findDistinctByLastnameAndFirstname							select distinct …​ where x.lastname = ?1 and x.firstname = ?2
+
+And					findByLastnameAndFirstname									… where x.lastname = ?1 and x.firstname = ?2
+
+Or					findByLastnameOrFirstname									… where x.lastname = ?1 or x.firstname = ?2
+
+Is, Equals			findByFirstname,findByFirstnameIs,findByFirstnameEquals		… where x.firstname = ?1 (or … where x.firstname IS NULL if the argument is null)
+
+Between				findByStartDateBetween										… where x.startDate between ?1 and ?2
+
+LessThan			findByAgeLessThan											… where x.age < ?1
+
+LessThanEqual		findByAgeLessThanEqual										… where x.age <= ?1
+
+GreaterThan			findByAgeGreaterThan										… where x.age > ?1
+
+GreaterThanEqual	findByAgeGreaterThanEqual									… where x.age >= ?1
+
+After				findByStartDateAfter										… where x.startDate > ?1
+
+Before				findByStartDateBefore										… where x.startDate < ?1
+
+IsNull, Null		findByAge(Is)Null											… where x.age is null
+
+IsNotNull, NotNull	findByAge(Is)NotNull										… where x.age is not null
+
+Like				findByFirstnameLike											… where x.firstname like ?1
+
+NotLike				findByFirstnameNotLike										… where x.firstname not like ?1
+
+StartingWith		findByFirstnameStartingWith									… where x.firstname like ?1 (parameter bound with appended %)
+
+EndingWith			findByFirstnameEndingWith									… where x.firstname like ?1 (parameter bound with prepended %)
+
+Containing			findByFirstnameContaining									… where x.firstname like ?1 (parameter bound wrapped in %)
+
+OrderBy				findByAgeOrderByLastnameDesc								… where x.age = ?1 order by x.lastname desc
+
+Not					findByLastnameNot											… where x.lastname <> ?1
+
+In					findByAgeIn(Collection<Age> ages)							… where x.age in ?1
+
+NotIn				findByAgeNotIn(Collection<Age> ages)						… where x.age not in ?1
+
+True				findByActiveTrue()											… where x.active = true
+
+False				findByActiveFalse()											… where x.active = false
+
+IgnoreCase			findByFirstnameIgnoreCase									… where UPPER(x.firstname) = UPPER(?1)
+Output:
+From run method in TestRunner class.
+------ To get record by findByEmployeeCode(String employeeCode) method ------
+Hibernate: select employee0_.employee_id as employee1_0_, employee0_.age as age2_0_, employee0_.designation as designat3_0_, employee0_.employee_code as employee4_0_, employee0_.employee_name as employee5_0_ from employee employee0_ where employee0_.employee_id=?
+2 --> Sathish[A002]
+---- To get records by findByEmployeeCode(String employeeCode) method ----
+Hibernate: select employee0_.employee_id as employee1_0_, employee0_.age as age2_0_, employee0_.designation as designat3_0_, employee0_.employee_code as employee4_0_, employee0_.employee_name as employee5_0_ from employee employee0_ where employee0_.employee_code=?
+3 --> Pavan[A003]
+---- To get records by findByEmployeeName(String employeeName) method ----
+Hibernate: select employee0_.employee_id as employee1_0_, employee0_.age as age2_0_, employee0_.designation as designat3_0_, employee0_.employee_code as employee4_0_, employee0_.employee_name as employee5_0_ from employee employee0_ where employee0_.employee_name=?
+1 --> Sree Sagar[A001]
+----- To get records by findByAge(Integer age) method -----
+Hibernate: select employee0_.employee_id as employee1_0_, employee0_.age as age2_0_, employee0_.designation as designat3_0_, employee0_.employee_code as employee4_0_, employee0_.employee_name as employee5_0_ from employee employee0_ where employee0_.age=?
+2 --> Sathish[A002] --> 27
+5 --> Pavan[A005] --> 27
+6 --> Rakesh[A006] --> 27
+----- To get records by findByDesignation(String designation) method -----
+Hibernate: select employee0_.employee_id as employee1_0_, employee0_.age as age2_0_, employee0_.designation as designat3_0_, employee0_.employee_code as employee4_0_, employee0_.employee_name as employee5_0_ from employee employee0_ where employee0_.designation=?
+3 --> Pavan[A003] --> QA Engineer
+4 --> Aravind[A004] --> QA Engineer
+5 --> Pavan[A005] --> QA Engineer
+----- To get records by findByEmployeeNameAndEmployeeCode(String employeeName, String employeeCode) method -----
+Hibernate: select employee0_.employee_id as employee1_0_, employee0_.age as age2_0_, employee0_.designation as designat3_0_, employee0_.employee_code as employee4_0_, employee0_.employee_name as employee5_0_ from employee employee0_ where employee0_.employee_name=? and employee0_.employee_code=?
+6 --> Rakesh[A006]
+----- To get records by findByEmployeeNameOrEmploEmployeeCode(String employeeName, String employeeCode) method -----
+Hibernate: select employee0_.employee_id as employee1_0_, employee0_.age as age2_0_, employee0_.designation as designat3_0_, employee0_.employee_code as employee4_0_, employee0_.employee_name as employee5_0_ from employee employee0_ where employee0_.employee_name=? or employee0_.employee_code=?
+1 --> Sree Sagar[A001]
+2 --> Sathish[A002]
+----- To get records by findByAgeLessThanEqual(Integer age) method -----
+Hibernate: select employee0_.employee_id as employee1_0_, employee0_.age as age2_0_, employee0_.designation as designat3_0_, employee0_.employee_code as employee4_0_, employee0_.employee_name as employee5_0_ from employee employee0_ where employee0_.age<=?
+2 --> Sathish[A002] --> 27
+3 --> Pavan[A003] --> 26
+5 --> Pavan[A005] --> 27
+6 --> Rakesh[A006] --> 27
+----- To get records by findByDesignationOrderByEmployeeNameAsc(String designation) method -----
+Hibernate: select employee0_.employee_id as employee1_0_, employee0_.age as age2_0_, employee0_.designation as designat3_0_, employee0_.employee_code as employee4_0_, employee0_.employee_name as employee5_0_ from employee employee0_ where employee0_.designation=? order by employee0_.employee_name asc
+6 --> Rakesh[A006] --> 27
+2 --> Sathish[A002] --> 27
+1 --> Sree Sagar[A001] --> 30
+From main method in SpringBootDataJPAApplication4Application class.
